@@ -1,0 +1,9 @@
+//Main Hack computer chip
+// 16 bit hack computer with 64 * 16 bit Data Memory and 32k * 16 bit Instruction Memory
+CHIP HackComputer{
+IN reset;
+PARTS:
+ROM32K(address=pc, out=instruction);
+HackCPU(instruction=instruction, inM=inM, reset=reset, outM=outM, addressM=addressM, writeM=writeM, pc=pc);
+RAM64(in=outM, load=writeM, address=addressM, out=inM);
+}

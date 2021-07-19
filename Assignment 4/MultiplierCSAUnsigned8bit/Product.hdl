@@ -1,0 +1,14 @@
+//Chip to calculate each partial product using bitwise multiplication
+CHIP Product {
+IN x[8], y;
+OUT out[8];
+PARTS:
+And(a=x[0],b=y,out=out[0]);
+And(a=x[1],b=y,out=out[1]);
+And(a=x[2],b=y,out=out[2]);
+And(a=x[3],b=y,out=out[3]);
+And(a=x[4],b=y,out=out[4]);
+And(a=x[5],b=y,out=out[5]);
+And(a=x[6],b=y,out=out[6]);
+And(a=x[7],b=y,out=out[7]);
+}

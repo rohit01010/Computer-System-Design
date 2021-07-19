@@ -1,0 +1,28 @@
+// Hack ALU 16 Bit
+CHIP HackALU16Bit
+{
+
+IN X[16],Y[16],zx,nx,zy,ny,f,no;
+OUT Z[16],zr,ng;
+
+PARTS:
+
+// Generating p
+Multiplexer16Bit2to1(x0=X,x1=false,s=zx,y=x2);
+Xor16(a=nx,b=x2,out=p);
+
+// Generating q
+Multiplexer16Bit2to1(x0=Y,x1=false,s=zy,y=y2);
+Xor16(a=ny,b=y2,out=q);
+
+// Operation on p and q
+Sum16bit(x=p,y=q,a=true,signed=true,sum=paddq,of=of1);
+And16(a=p,b=q,out=pandq);
+
+// Selecting the required operation
+Multiplexer16Bit2to1(x0=pandq,x1=paddq,s=f,y=z2);
+Xor16(a=no,b=z2,out=Z,out[15]=ng,out=z3);
+
+CheckZero16Bit(in=z3,out=zr);
+
+}

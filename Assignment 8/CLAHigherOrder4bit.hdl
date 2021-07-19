@@ -1,0 +1,29 @@
+// 4 bit CLA based adder using higher level propagate and generate terms
+CHIP CLAHigherOrder4bit 
+{
+
+IN x[4],y[4],p0,p1,p2,p3,g0,g1,g2,g3,c0;
+OUT sum[4],c;
+
+PARTS:
+
+//Generating carries
+And(a=p0,b=c0,out=p0c0);
+Or(a=p0c0,b=g0,out=c1);
+
+And5(a=true,b=true,c=p1,d=p0,e=c0,out=p1p0c0);
+And(a=p1,b=g0,out=p1g0);
+Or5(a=false,b=false,c=p1p0c0,d=p1g0,e=g1,out=c2);
+
+And5(a=true,b=p2,c=p1,d=p0,e=c0,out=p2p1p0c0);
+And5(a=true,b=true,c=p2,d=p1,e=g0,out=p2p1g0);
+And(a=p2,b=g1,out=p2g1);
+Or5(a=false,b=p2p1p0c0,c=p2p1g0,d=p2g1,e=g2,out=c3,out=c);
+
+//Calculating sum
+Xor(a=p0,b=c0,out=sum[0]);
+Xor(a=p1,b=c1,out=sum[1]);
+Xor(a=p2,b=c2,out=sum[2]);
+Xor(a=p3,b=c3,out=sum[3]);
+
+}

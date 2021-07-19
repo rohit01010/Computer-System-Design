@@ -1,0 +1,15 @@
+//Chip to generate all partial products in signed integer multiplication
+CHIP PartialProductsSigned {
+IN x[8], y[8];
+OUT pp0[16],pp1[16],pp2[16],pp3[16],pp4[16],pp5[16],pp6[16],pp7[16];
+PARTS:
+ProductSigned(x=x,y=y[0],out=pp0[0..7],sign=pp0[8..15]);
+ProductSigned(x=x,y=y[1],out=pp1[1..8],sign[0..6]=pp1[9..15]);
+ProductSigned(x=x,y=y[2],out=pp2[2..9],sign[0..5]=pp2[10..15]);
+ProductSigned(x=x,y=y[3],out=pp3[3..10],sign[0..4]=pp3[11..15]);
+ProductSigned(x=x,y=y[4],out=pp4[4..11],sign[0..3]=pp4[12..15]);
+ProductSigned(x=x,y=y[5],out=pp5[5..12],sign[0..2]=pp5[13..15]);
+ProductSigned(x=x,y=y[6],out=pp6[6..13],sign[0..1]=pp6[14..15]);
+Not16(in[0..7]=x,notin[0..7]=notx);
+ProductSigned(x=notx,y=y[7],out=pp7[7..14],sign[0]=pp7[15]);
+}

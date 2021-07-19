@@ -1,0 +1,14 @@
+CHIP Encoder8To3 {
+IN x0,x1,x2,x3,x4,x5,x6,x7;
+OUT y0,y1,y2;
+PARTS:
+Or(a=x4,b=x5,out=x4orx5);
+Or(a=x4orx5,b=x6,out=x4orx5orx6);
+Or(a=x4orx5orx6,b=x7,out=y2);
+Or(a=x2,b=x3,out=x2orx3);
+Or(a=x2orx3,b=x6,out=x2orx3orx6);
+Or(a=x2orx3orx6,b=x7,out=y1);
+Or(a=x1,b=x3,out=x1orx3);
+Or(a=x1orx3,b=x5,out=x1orx3orx5);
+Or(a=x1orx3orx5,b=x7,out=y0);
+}

@@ -1,0 +1,7 @@
+CHIP Multiplexer4to1Priority {
+IN x01,x00,x11,x10,x21,x20,x31,x30,r0,r1,r2,r3;
+OUT y1,y0;
+PARTS:
+Encoder4To2Priority(x0=r0,x1=r1,x2=r2,x3=r3,y0=s0,y1=s1);
+Multiplexer4to1(x01=x01,x00=x00,x11=x11,x10=x10,x21=x21,x20=x20,x31=x31,x30=x30,s1=s1,s0=s0,y1=y1,y0=y0);
+}

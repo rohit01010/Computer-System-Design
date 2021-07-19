@@ -1,0 +1,22 @@
+//3 to 2 summand reduction
+CHIP CSA3to2Reducer{
+IN x[16],y[16],z[16];
+OUT s[16],c[16];
+PARTS:
+FullAdder(a=x[0],b=y[0],c=z[0],sum=s[0],carry=c[1]);
+FullAdder(a=x[1],b=y[1],c=z[1],sum=s[1],carry=c[2]);
+FullAdder(a=x[2],b=y[2],c=z[2],sum=s[2],carry=c[3]);
+FullAdder(a=x[3],b=y[3],c=z[3],sum=s[3],carry=c[4]);
+FullAdder(a=x[4],b=y[4],c=z[4],sum=s[4],carry=c[5]);
+FullAdder(a=x[5],b=y[5],c=z[5],sum=s[5],carry=c[6]);
+FullAdder(a=x[6],b=y[6],c=z[6],sum=s[6],carry=c[7]);
+FullAdder(a=x[7],b=y[7],c=z[7],sum=s[7],carry=c[8]);
+FullAdder(a=x[8],b=y[8],c=z[8],sum=s[8],carry=c[9]);
+FullAdder(a=x[9],b=y[9],c=z[9],sum=s[9],carry=c[10]);
+FullAdder(a=x[10],b=y[10],c=z[10],sum=s[10],carry=c[11]);
+FullAdder(a=x[11],b=y[11],c=z[11],sum=s[11],carry=c[12]);
+FullAdder(a=x[12],b=y[12],c=z[12],sum=s[12],carry=c[13]);
+FullAdder(a=x[13],b=y[13],c=z[13],sum=s[13],carry=c[14]);
+FullAdder(a=x[14],b=y[14],c=z[14],sum=s[14],carry=c[15]);
+FullAdder(a=x[15],b=y[15],c=z[15],sum=s[15],carry=c0);
+}

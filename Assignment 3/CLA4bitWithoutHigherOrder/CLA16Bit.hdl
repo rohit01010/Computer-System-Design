@@ -1,0 +1,31 @@
+CHIP CLA16Bit {
+IN x[16],y[16],a,signed;
+OUT out[16],of;
+PARTS:
+Not(in=a,out=nota);
+Xor(a=y[0],b=nota,out=y0);
+Xor(a=y[1],b=nota,out=y1);
+Xor(a=y[2],b=nota,out=y2);
+Xor(a=y[3],b=nota,out=y3);
+Xor(a=y[4],b=nota,out=y4);
+Xor(a=y[5],b=nota,out=y5);
+Xor(a=y[6],b=nota,out=y6);
+Xor(a=y[7],b=nota,out=y7);
+Xor(a=y[8],b=nota,out=y8);
+Xor(a=y[9],b=nota,out=y9);
+Xor(a=y[10],b=nota,out=y10);
+Xor(a=y[11],b=nota,out=y11);
+Xor(a=y[12],b=nota,out=y12);
+Xor(a=y[13],b=nota,out=y13);
+Xor(a=y[14],b=nota,out=y14);
+Xor(a=y[15],b=nota,out=y15);
+CLA4Bit(c0=nota,X[0]=x[0],X[1]=x[1],X[2]=x[2],X[3]=x[3],Y[0]=y0,Y[1]=y1,Y[2]=y2,Y[3]=y3,S[0]=out[0],S[1]=out[1],S[2]= out[2],S[3]=out[3],c3=C3,c4=C4);
+CLA4Bit(c0=C4,X[0]=x[4],X[1]=x[5],X[2]=x[6],X[3]=x[7],Y[0]=y4,Y[1]=y5,Y[2]=y6,Y[3]=y7,S[0]=out[4],S[1]=out[5],S[2]=out[6],S[3]=out[7],c3=C7,c4=C8);
+CLA4Bit(c0=C8,X[0]=x[8],X[1]=x[9],X[2]=x[10],X[3]=x[11],Y[0]=y8,Y[1]=y9,Y[2]=y10,Y[3]=y11,S[0]=out[8],S[1]=out[9],S[2]=out[10],S[3]=out[11],c3=C11,c4=C12);
+CLA4Bit(c0=C12,X[0]=x[12],X[1]=x[13],X[2]=x[14],X[3]=x[15],Y[0]=y12,Y[1]=y13,Y[2]=y14,Y[3]=y15,S[0]=out[12],S[1]=out[13],S[2]=out[14],S[3]=out[15],c3=c15,c4=c16);
+And(a=c15,b=signed,out=c15andsigned);
+Not(in=signed,out=notsigned);
+And(a=notsigned,b=nota,out=notsignedAndnota);
+Xor(a=notsignedAndnota,b=c15andsigned,out=t);
+Xor(a=t,b=c16,out=of);
+}

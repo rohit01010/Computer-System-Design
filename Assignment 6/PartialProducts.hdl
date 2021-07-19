@@ -1,0 +1,14 @@
+//Chip to generate the 16 bit partial products in 8 bit unsigned integer multiplication
+CHIP PartialProducts {
+IN x[8], y[8];
+OUT pp0[16],pp1[16],pp2[16],pp3[16],pp4[16],pp5[16],pp6[16],pp7[16];
+PARTS:
+Product(x=x,y=y[0],out=pp0[0..7]);
+Product(x=x,y=y[1],out=pp1[1..8]);
+Product(x=x,y=y[2],out=pp2[2..9]);
+Product(x=x,y=y[3],out=pp3[3..10]);
+Product(x=x,y=y[4],out=pp4[4..11]);
+Product(x=x,y=y[5],out=pp5[5..12]);
+Product(x=x,y=y[6],out=pp6[6..13]);
+Product(x=x,y=y[7],out=pp7[7..14]);
+}

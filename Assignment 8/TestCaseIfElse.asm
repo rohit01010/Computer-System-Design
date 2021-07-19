@@ -1,0 +1,16 @@
+@16
+D=M
+@17
+D=D-M
+@ENDIF
+D;JGT
+@17
+D=M
+@16
+D=D-M
+(ENDIF)
+@18
+M=D
+(END)
+@END
+0;JMP

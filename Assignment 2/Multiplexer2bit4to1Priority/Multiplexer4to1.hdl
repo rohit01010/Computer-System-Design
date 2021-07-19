@@ -1,0 +1,41 @@
+CHIP Multiplexer4to1 {
+IN x01,x00,x11,x10,x21,x20,x31,x30,s1,s0;
+OUT y1,y0;
+PARTS:
+Not(in=x00,out=notx00);
+Not(in=x01,out=notx01);
+Not(in=x10,out=notx10);
+Not(in=x11,out=notx11);
+Not(in=x20,out=notx20);
+Not(in=x21,out=notx21);
+Not(in=x30,out=notx30);
+Not(in=x31,out=notx31);
+Not(in=s0,out=nots0);
+Not(in=s1,out=nots1);
+
+And(a=x00,b=nots1,out=c1);
+And(a=c1,b=nots0,out=c2);
+And(a=x10,b=nots1,out=c3);
+And(a=c3,b=s0,out=c4);
+And(a=x20,b=s1,out=c5);
+And(a=c5,b=nots0,out=c6);
+And(a=x30,b=s1,out=c7);
+And(a=c7,b=s0,out=c8);
+
+Or(a=c2,b=c4,out=c9);
+Or(a=c6,b=c8,out=c10);
+Or(a=c9,b=c10,out=y0);
+
+And(a=x01,b=nots1,out=d1);
+And(a=d1,b=nots0,out=d2);
+And(a=x11,b=nots1,out=d3);
+And(a=d3,b=s0,out=d4);
+And(a=x21,b=s1,out=d5);
+And(a=d5,b=nots0,out=d6);
+And(a=x31,b=s1,out=d7);
+And(a=d7,b=s0,out=d8);
+
+Or(a=d2,b=d4,out=d9);
+Or(a=d6,b=d8,out=d10);
+Or(a=d9,b=d10,out=y1);
+}

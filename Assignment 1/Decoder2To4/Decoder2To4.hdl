@@ -1,0 +1,11 @@
+CHIP Decoder2To4 {
+IN x1,x0;
+OUT y0,y1,y2,y3;
+PARTS:
+Not(in=x0,out=notx0);
+Not(in=x1,out=notx1);
+And(a=notx0,b=notx1,out=y0);
+And(a=x0,b=notx1,out=y1);
+And(a=notx0,b=x1,out=y2);
+And(a=x0,b=x1,out=y3);
+}

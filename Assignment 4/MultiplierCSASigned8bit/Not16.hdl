@@ -1,0 +1,22 @@
+//Chip to find the complement of a 16 bit data line
+CHIP Not16 {
+IN in[16];
+OUT notin[16];
+PARTS:
+Not(in=in[0],out=notin[0]);
+Not(in=in[1],out=notin[1]);
+Not(in=in[2],out=notin[2]);
+Not(in=in[3],out=notin[3]);
+Not(in=in[4],out=notin[4]);
+Not(in=in[5],out=notin[5]);
+Not(in=in[6],out=notin[6]);
+Not(in=in[7],out=notin[7]);
+Not(in=in[8],out=notin[8]);
+Not(in=in[9],out=notin[9]);
+Not(in=in[10],out=notin[10]);
+Not(in=in[11],out=notin[11]);
+Not(in=in[12],out=notin[12]);
+Not(in=in[13],out=notin[13]);
+Not(in=in[14],out=notin[14]);
+Not(in=in[15],out=notin[15]);
+}

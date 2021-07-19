@@ -1,0 +1,21 @@
+CHIP Comparator8bit {
+IN x0,x1,x2,x3,x4,x5,x6,x7,y0,y1,y2,y3,y4,y5,y6,y7;
+OUT z;
+PARTS:
+Xor(a=x0,b=y0,out=x0xory0);
+Xor(a=x1,b=y1,out=x1xory1);
+Xor(a=x2,b=y2,out=x2xory2);
+Xor(a=x3,b=y3,out=x3xory3);
+Xor(a=x4,b=y4,out=x4xory4);
+Xor(a=x5,b=y5,out=x5xory5);
+Xor(a=x6,b=y6,out=x6xory6);
+Xor(a=x7,b=y7,out=x7xory7);
+Or(a=x0xory0,b=x1xory1,out=e1);
+Or(a=e1,b=x2xory2,out=e2);
+Or(a=e2,b=x3xory3,out=e3);
+Or(a=e3,b=x4xory4,out=e4);
+Or(a=e4,b=x5xory5,out=e5);
+Or(a=e5,b=x6xory6,out=e6);
+Or(a=e6,b=x7xory7,out=e7);
+Not(in=e7,out=z);
+}

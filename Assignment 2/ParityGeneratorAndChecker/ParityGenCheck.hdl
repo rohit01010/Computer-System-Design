@@ -1,0 +1,13 @@
+CHIP ParityGenCheck {
+IN x7,x6,x5,x4,x3,x2,x1,x0,pIn;
+OUT pOut,z;
+PARTS:
+Xor(a=x0,b=x1,out=p1);
+Xor(a=x2,b=p1,out=p2);
+Xor(a=x3,b=p2,out=p3);
+Xor(a=x4,b=p3,out=p4);
+Xor(a=x5,b=p4,out=p5);
+Xor(a=x6,b=p5,out=p6);
+Xor(a=x7,b=p6,out=pOut,out=pTest);
+Xor(a=pIn,b=pTest,out=z);
+}

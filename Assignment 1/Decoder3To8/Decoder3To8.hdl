@@ -1,0 +1,32 @@
+CHIP Decoder3To8 {
+IN x2,x1,x0;
+OUT y0,y1,y2,y3,y4,y5,y6,y7;
+PARTS:
+Not(in=x0,out=notx0);
+Not(in=x1,out=notx1);
+Not(in=x2,out=notx2);
+
+And(a=notx0,b=notx1,out=y00);
+And(a=y00,b=notx2,out=y0);
+
+And(a=x0,b=notx1,out=y01);
+And(a=y01,b=notx2,out=y1);
+
+And(a=notx0,b=x1,out=y02);
+And(a=y02,b=notx2,out=y2);
+
+And(a=x0,b=x1,out=y03);
+And(a=y03,b=notx2,out=y3);
+
+And(a=notx0,b=notx1,out=y04);
+And(a=y04,b=x2,out=y4);
+
+And(a=x0,b=notx1,out=y05);
+And(a=y05,b=x2,out=y5);
+
+And(a=notx0,b=x1,out=y06);
+And(a=y06,b=x2,out=y6);
+
+And(a=x0,b=x1,out=y07);
+And(a=y07,b=x2,out=y7);
+}

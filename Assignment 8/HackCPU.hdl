@@ -1,0 +1,52 @@
+CHIP HackCPU {
+
+IN instruction[16], inM[16], reset;            
+OUT outM[16], addressM[6], writeM, pc[15]; 
+
+PARTS:
+
+//Mux1
+Not(in=instruction[15],out=NotInstruction15);
+Multiplexer16Bit2to1(x0=aluOut,x1=instruction,s=NotInstruction15,y=mux1Out);
+
+//Write destination
+And(a=instruction[15],b=instruction[5],out=temp1);
+Or(a=temp1,b=NotInstruction15,out=writeA);
+And(a=instruction[15],b=instruction[4],out=writeD);
+And(a=instruction[15],b=instruction[3],out=writeM);
+
+    
+//RegisterA
+ARegister(in=mux1Out,load=writeA,out[0..5]=addressM,out=regAOut);
+
+//Mux2
+And(a=instruction[15],b=instruction[12],out=Mux2Select);
+Multiplexer16Bit2to1(x0=regAOut,x1=inM,s=Mux2Select,y=mux2Out);
+
+//RegisterD
+DRegister(in=aluOut,load=writeD,out=regDOut);    
+
+//ALU
+HackALU16Bit(X=regDOut,Y=mux2Out,zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],f=instruction[7],no=instruction[6],Z=aluOut, Z=outM,zr=zr,ng=ng);
+
+
+//Program Counter logic - jump detection
+Not(in=zr,out=Notzr);
+Not(in=ng,out=Notng);
+Not(in=instruction[2],out=NotInstruction2);
+Not(in=instruction[1],out=NotInstruction1);
+Not(in=instruction[0],out=NotInstruction0);
+
+And5(a=NotInstruction2,b=NotInstruction1,c=instruction[0],d=Notzr,e=Notng,out=JGT);
+And5(a=NotInstruction2,b=instruction[1],c=NotInstruction0,d=zr,e=true,out=JEQ);
+And5(a=NotInstruction2,b=instruction[1],c=instruction[0],d=zr,e=Notng,out=JGE);
+And5(a=instruction[2],b=NotInstruction1,c=NotInstruction0,d=Notzr,e=ng,out=JLT);
+And5(a=instruction[2],b=NotInstruction1,c=instruction[0],d=Notzr,e=true,out=JNE);
+And5(a=instruction[2],b=instruction[1],c=NotInstruction0,d=zr,e=ng,out=JLE);
+And5(a=instruction[2],b=instruction[1],c=instruction[0],d=true,e=true,out=JMP);
+Or5(a=JGT,b=JEQ,c=JGE,d=JLT,e=JNE,out=temp2);
+Or5(a=temp2,b=JLE,c=JMP,d=false,e=false,out=temp3);
+And(a=temp3,b=instruction[15],out=J);
+Not(in=J,out=NotJ);
+PC(in=regAOut, load=J, inc=NotJ, reset=reset, out[0..14]=pc);
+}

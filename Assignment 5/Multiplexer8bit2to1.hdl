@@ -1,0 +1,38 @@
+CHIP Multiplexer8bit2to1 {
+IN x0[8],x1[8],s;
+OUT y[8];
+PARTS:
+Not(in=s,out=nots);
+
+And(a=x0[0],b=nots,out=c00);
+And(a=x1[0],b=s,out=c01);
+Or(a=c00,b=c01,out=y[0]);
+
+And(a=x0[1],b=nots,out=c10);
+And(a=x1[1],b=s,out=c11);
+Or(a=c10,b=c11,out=y[1]);
+
+And(a=x0[2],b=nots,out=c20);
+And(a=x1[2],b=s,out=c21);
+Or(a=c20,b=c21,out=y[2]);
+
+And(a=x0[3],b=nots,out=c30);
+And(a=x1[3],b=s,out=c31);
+Or(a=c30,b=c31,out=y[3]);
+
+And(a=x0[4],b=nots,out=c40);
+And(a=x1[4],b=s,out=c41);
+Or(a=c40,b=c41,out=y[4]);
+
+And(a=x0[5],b=nots,out=c50);
+And(a=x1[5],b=s,out=c51);
+Or(a=c50,b=c51,out=y[5]);
+
+And(a=x0[6],b=nots,out=c60);
+And(a=x1[6],b=s,out=c61);
+Or(a=c60,b=c61,out=y[6]);
+
+And(a=x0[7],b=nots,out=c70);
+And(a=x1[7],b=s,out=c71);
+Or(a=c70,b=c71,out=y[7]);
+}

@@ -1,0 +1,8 @@
+//Overflow detection logic for unsigned integer multiplication
+CHIP OverflowUnsigned {
+IN of1,of2[8];
+OUT of;
+PARTS:
+Or5(a=of1,b=of2[0],c=of2[1],d=of2[2],e=of2[3],out=of3);
+Or5(a=of3,b=of2[4],c=of2[5],d=of2[6],e=of2[7],out=of);
+}

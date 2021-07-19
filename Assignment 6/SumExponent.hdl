@@ -1,0 +1,20 @@
+//Chip to calculate the biased exponent of the result using the exponent bits of operands and the 16th bit in the mantissa product
+CHIP SumExponent {
+IN xe[8],ye[8],s;
+OUT sum[8];
+PARTS:
+//CLA addition of xe and ye
+CLA4bit(X=xe[0..3],Y=ye[0..3],c0=false,S=xePlusye0,c3=c3,c4=c4);
+CLA4bit(X=xe[4..7],Y=ye[4..7],c0=c4,S=xePlusye1,c3=c7,c4=c8);
+
+//Subtracting 127
+CLA4bit(X=xePlusye0,c0=true,S=S00,c3=c30,c4=c40);
+CLA4bit(X=xePlusye1,Y[3]=true,c0=c40,S=S01,c3=c300,c4=c400);
+
+//Subtracting 126
+CLA4bit(X=xePlusye0,Y[0]=true,c0=true,S=S10,c3=c31,c4=c41);
+CLA4bit(X=xePlusye1,Y[3]=true,c0=c41,S=S11,c3=c311,c4=c411);
+
+//Multiplexer for exponent adjustment based on mantissa product
+Multiplexer8bit2to1(x0[0..3]=S00,x0[4..7]=S01,x1[0..3]=S10,x1[4..7]=S11,s=s,y=sum);
+}

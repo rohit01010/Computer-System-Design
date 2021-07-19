@@ -1,0 +1,28 @@
+CHIP Encoder8To3Priority {
+IN x0,x1,x2,x3,x4,x5,x6,x7;
+OUT y0,y1,y2;
+PARTS:
+Not(in=x0,out=notx0);
+Not(in=x1,out=notx1);
+Not(in=x2,out=notx2);
+Not(in=x3,out=notx3);
+Not(in=x4,out=notx4);
+Not(in=x5,out=notx5);
+Not(in=x6,out=notx6);
+
+And(a=notx0,b=notx1,out=c1);
+And(a=notx2,b=notx3,out=c2);
+And(a=c1,b=c2,out=y2);
+
+And(a=notx4,b=notx5,out=d1);
+Or(a=x2,b=x3,out=d2);
+Or(a=d1,b=d2,out=d3);
+And(a=c1,b=d3,out=y1);
+
+Or(a=x5,b=notx6,out=e1);
+And(a=e1,b=notx4,out=e2);
+Or(a=e2,b=x3,out=e3);
+And(a=e3,b=notx2,out=e4);
+Or(a=e4,b=x1,out=e5);
+And(a=e5,b=notx0,out=y0);
+}

@@ -1,0 +1,9 @@
+//Chip to check for 1s in a 4 bit data line
+CHIP Or4 {
+IN x[4];
+OUT z;
+PARTS:
+Or(a=x[0],b=x[1],out=z0);
+Or(a=z0,b=x[2],out=z1);
+Or(a=z1,b=x[3],out=z);
+}

@@ -1,0 +1,16 @@
+CHIP FullAdder {
+IN x, y, c;
+OUT s, c1;
+
+PARTS:
+
+Xor(a=x,b=y,out=a1);
+Xor(a=a1,b=c,out=s);
+
+And(a=x,b=y,out=a2);
+And(a=y,b=c,out=a3);
+And(a=c,b=x,out=a4);
+Or(a=a2,b=a3,out=a5);
+Or(a=a5,b=a4,out=c1);
+
+}

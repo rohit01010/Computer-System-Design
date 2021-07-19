@@ -1,0 +1,54 @@
+//8 bit ALU
+CHIP ALU8Bit {
+IN X[8],Y[8],S,c[3];
+OUT Z[8],of,eq;
+PARTS:
+//and
+And8Bit(a[0]=X[0],a[1]=X[1],a[2]=X[2],a[3]=X[3],a[4]=X[4],a[5]=X[5],a[6]=X[6],a[7]=X[7],b[0]=Y[0],b[1]=Y[1],b[2]=Y[2],b[3]=Y[3],b[4]=Y[4],b[5]=Y[5],b[6]=Y[6],b[7]=Y[7],z[0]=XandY0,z[1]=XandY1,z[2]=XandY2,z[3]=XandY3,z[4]=XandY4,z[5]=XandY5,z[6]=XandY6,z[7]=XandY7);
+
+//or
+Or8Bit(a[0]=X[0],a[1]=X[1],a[2]=X[2],a[3]=X[3],a[4]=X[4],a[5]=X[5],a[6]=X[6],a[7]=X[7],b[0]=Y[0],b[1]=Y[1],b[2]=Y[2],b[3]=Y[3],b[4]=Y[4],b[5]=Y[5],b[6]=Y[6],b[7]=Y[7],z[0]=XorY0,z[1]=XorY1,z[2]=XorY2,z[3]=XorY3,z[4]=XorY4,z[5]=XorY5,z[6]=XorY6,z[7]=XorY7);
+
+//xor
+Xor8Bit(a[0]=X[0],a[1]=X[1],a[2]=X[2],a[3]=X[3],a[4]=X[4],a[5]=X[5],a[6]=X[6],a[7]=X[7],b[0]=Y[0],b[1]=Y[1],b[2]=Y[2],b[3]=Y[3],b[4]=Y[4],b[5]=Y[5],b[6]=Y[6],b[7]=Y[7],z[0]=XxorY0,z[1]=XxorY1,z[2]=XxorY2,z[3]=XxorY3,z[4]=XxorY4,z[5]=XxorY5,z[6]=XxorY6,z[7]=XxorY7);
+
+//add
+AdderSubtractor8Bit(x[0]=X[0],x[1]=X[1],x[2]=X[2],x[3]=X[3],x[4]=X[4],x[5]=X[5],x[6]=X[6],x[7]=X[7],y[0]=Y[0],y[1]=Y[1],y[2]=Y[2],y[3]=Y[3],y[4]=Y[4],y[5]=Y[5],y[6]=Y[6],y[7]=Y[7],a=true,signed=S,out[0]=XaddY0,out[1]=XaddY1,out[2]=XaddY2,out[3]=XaddY3,out[4]=XaddY4,out[5]=XaddY5,out[6]=XaddY6,out[7]=XaddY7,of=ofAdd);
+
+//sub
+AdderSubtractor8Bit(x[0]=X[0],x[1]=X[1],x[2]=X[2],x[3]=X[3],x[4]=X[4],x[5]=X[5],x[6]=X[6],x[7]=X[7],y[0]=Y[0],y[1]=Y[1],y[2]=Y[2],y[3]=Y[3],y[4]=Y[4],y[5]=Y[5],y[6]=Y[6],y[7]=Y[7],a=false,signed=S,out[0]=XsubY0,out[1]=XsubY1,out[2]=XsubY2,out[3]=XsubY3,out[4]=XsubY4,out[5]=XsubY5,out[6]=XsubY6,out[7]=XsubY7,of=ofSub);
+
+//SMul
+MultiplierCSASigned8bit(x[0]=X[0],x[1]=X[1],x[2]=X[2],x[3]=X[3],x[4]=X[4],x[5]=X[5],x[6]=X[6],x[7]=X[7],y[0]=Y[0],y[1]=Y[1],y[2]=Y[2],y[3]=Y[3],y[4]=Y[4],y[5]=Y[5],y[6]=Y[6],y[7]=Y[7],out[0]=XSMulY0,out[1]=XSMulY1,out[2]=XSMulY2,out[3]=XSMulY3,out[4]=XSMulY4,out[5]=XSMulY5,out[6]=XSMulY6,out[7]=XSMulY7,of=ofSMul);
+
+//UMul
+MultiplierCSAUnsigned8bit(x[0]=X[0],x[1]=X[1],x[2]=X[2],x[3]=X[3],x[4]=X[4],x[5]=X[5],x[6]=X[6],x[7]=X[7],y[0]=Y[0],y[1]=Y[1],y[2]=Y[2],y[3]=Y[3],y[4]=Y[4],y[5]=Y[5],y[6]=Y[6],y[7]=Y[7],out[0]=XUMulY0,out[1]=XUMulY1,out[2]=XUMulY2,out[3]=XUMulY3,out[4]=XUMulY4,out[5]=XUMulY5,out[6]=XUMulY6,out[7]=XUMulY7,of=ofUMul);
+
+Not(in=c[0],out=notc0);
+Not(in=c[1],out=notc1);
+
+//overflow bit generation
+And(a=notc1,b=notc0,out=t1);
+And(a=t1,b=c[2],out=t2);
+And(a=t2,b=ofAdd,out=ofAddNew);
+And(a=notc1,b=c[0],out=t3);
+And(a=t3,b=c[2],out=t4);
+And(a=t4,b=ofSub,out=ofSubNew);
+And(a=c[1],b=notc0,out=t5);
+And(a=t5,b=c[2],out=t6);
+And(a=t6,b=ofUMul,out=ofUMulNew);
+And(a=c[1],b=c[0],out=t7);
+And(a=t7,b=c[2],out=t8);
+And(a=t8,b=ofSMul,out=ofSMulNew);
+Or4(x[0]=ofAddNew,x[1]=ofSubNew,x[2]=ofSMulNew,x[3]=ofUMulNew,z=of);
+
+//equality bit
+Comparator8bit(x[0]=X[0],x[1]=X[1],x[2]=X[2],x[3]=X[3],x[4]=X[4],x[5]=X[5],x[6]=X[6],x[7]=X[7],y[0]=Y[0],y[1]=Y[1],y[2]=Y[2],y[3]=Y[3],y[4]=Y[4],y[5]=Y[5],y[6]=Y[6],y[7]=Y[7],z=eq);
+
+//ALU
+Multiplexer8bit4to1(x0[0]=false,x0[1]=false,x0[2]=false,x0[3]=false,x0[4]=false,x0[5]=false,x0[6]=false,x0[7]=false,x1[0]=XandY0,x1[1]=XandY1,x1[2]=XandY2,x1[3]=XandY3,x1[4]=XandY4,x1[5]=XandY5,x1[6]=XandY6,x1[7]=XandY7,x2[0]=XorY0,x2[1]=XorY1,x2[2]=XorY2,x2[3]=XorY3,x2[4]=XorY4,x2[5]=XorY5,x2[6]=XorY6,x2[7]=XorY7,x3[0]=XxorY0,x3[1]=XxorY1,x3[2]=XxorY2,x3[3]=XxorY3,x3[4]=XxorY4,x3[5]=XxorY5,x3[6]=XxorY6,x3[7]=XxorY7,s1=c[1],s0=c[0],y[0]=y00,y[1]=y01,y[2]=y02,y[3]=y03,y[4]=y04,y[5]=y05,y[6]=y06,y[7]=y07);
+
+Multiplexer8bit4to1(x0[0]=XaddY0,x0[1]=XaddY1,x0[2]=XaddY2,x0[3]=XaddY3,x0[4]=XaddY4,x0[5]=XaddY5,x0[6]=XaddY6,x0[7]=XaddY7,x1[0]=XsubY0,x1[1]=XsubY1,x1[2]=XsubY2,x1[3]=XsubY3,x1[4]=XsubY4,x1[5]=XsubY5,x1[6]=XsubY6,x1[7]=XsubY7,x2[0]=XUMulY0,x2[1]=XUMulY1,x2[2]=XUMulY2,x2[3]=XUMulY3,x2[4]=XUMulY4,x2[5]=XUMulY5,x2[6]=XUMulY6,x2[7]=XUMulY7,x3[0]=XSMulY0,x3[1]=XSMulY1,x3[2]=XSMulY2,x3[3]=XSMulY3,x3[4]=XSMulY4,x3[5]=XSMulY5,x3[6]=XSMulY6,x3[7]=XSMulY7,s1=c[1],s0=c[0],y[0]=y10,y[1]=y11,y[2]=y12,y[3]=y13,y[4]=y14,y[5]=y15,y[6]=y16,y[7]=y17);
+
+Multiplexer8bit2to1(x0[0]=y00,x0[1]=y01,x0[2]=y02,x0[3]=y03,x0[4]=y04,x0[5]=y05,x0[6]=y06,x0[7]=y07,x1[0]=y10,x1[1]=y11,x1[2]=y12,x1[3]=y13,x1[4]=y14,x1[5]=y15,x1[6]=y16,x1[7]=y17,s=c[2],y[0]=Z[0],y[1]=Z[1],y[2]=Z[2],y[3]=Z[3],y[4]=Z[4],y[5]=Z[5],y[6]=Z[6],y[7]=Z[7]);
+}

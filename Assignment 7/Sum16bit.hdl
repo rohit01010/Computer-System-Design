@@ -1,0 +1,103 @@
+// Adds two 16 bit numbers
+CHIP Sum16bit {
+IN x[16],y[16],a,signed;
+OUT sum[16],of;
+PARTS:
+Not(in=a,out=nota);
+
+//Propagate terms
+Xor(a=x[0],b=y[0],out=p0);
+Xor(a=x[1],b=y[1],out=p1);
+Xor(a=x[2],b=y[2],out=p2);
+Xor(a=x[3],b=y[3],out=p3);
+Xor(a=x[4],b=y[4],out=p4);
+Xor(a=x[5],b=y[5],out=p5);
+Xor(a=x[6],b=y[6],out=p6);
+Xor(a=x[7],b=y[7],out=p7);
+Xor(a=x[8],b=y[8],out=p8);
+Xor(a=x[9],b=y[9],out=p9);
+Xor(a=x[10],b=y[10],out=p10);
+Xor(a=x[11],b=y[11],out=p11);
+Xor(a=x[12],b=y[12],out=p12);
+Xor(a=x[13],b=y[13],out=p13);
+Xor(a=x[14],b=y[14],out=p14);
+Xor(a=x[15],b=y[15],out=p15);
+
+//Generate terms
+And(a=x[0],b=y[0],out=g0);
+And(a=x[1],b=y[1],out=g1);
+And(a=x[2],b=y[2],out=g2);
+And(a=x[3],b=y[3],out=g3);
+And(a=x[4],b=y[4],out=g4);
+And(a=x[5],b=y[5],out=g5);
+And(a=x[6],b=y[6],out=g6);
+And(a=x[7],b=y[7],out=g7);
+And(a=x[8],b=y[8],out=g8);
+And(a=x[9],b=y[9],out=g9);
+And(a=x[10],b=y[10],out=g10);
+And(a=x[11],b=y[11],out=g11);
+And(a=x[12],b=y[12],out=g12);
+And(a=x[13],b=y[13],out=g13);
+And(a=x[14],b=y[14],out=g14);
+And(a=x[15],b=y[15],out=g15);
+
+//Higher level propagate terms
+And5(a=true,b=p3,c=p2,d=p1,e=p0,out=P0);
+And5(a=true,b=p7,c=p6,d=p5,e=p4,out=P1);
+And5(a=true,b=p11,c=p10,d=p9,e=p8,out=P2);
+And5(a=true,b=p15,c=p14,d=p13,e=p12,out=P3);
+
+//Higher level generate terms
+And5(a=true,b=p3,c=p2,d=p1,e=g0,out=p3p2p1g0);
+And5(a=true,b=true,c=p3,d=p2,e=g1,out=p3p2g1);
+And(a=p3,b=g2,out=p3g2);
+Or5(a=false,b=p3p2p1g0,c=p3p2g1,d=p3g2,e=g3,out=G0);
+
+And5(a=true,b=p7,c=p6,d=p5,e=g4,out=p7p6p5g4);
+And5(a=true,b=true,c=p7,d=p6,e=g5,out=p7p6g5);
+And(a=p7,b=g6,out=p7g6);
+Or5(a=false,b=p7p6p5g4,c=p7p6g5,d=p7g6,e=g7,out=G1);
+
+And5(a=true,b=p11,c=p10,d=p9,e=g8,out=p11p10p9g8);
+And5(a=true,b=true,c=p11,d=p10,e=g9,out=p11p10g9);
+And(a=p11,b=g10,out=p11g10);
+Or5(a=false,b=p11p10p9g8,c=p11p10g9,d=p11g10,e=g11,out=G2);
+
+And5(a=true,b=p15,c=p14,d=p13,e=g12,out=p15p14p13g12);
+And5(a=true,b=true,c=p15,d=p14,e=g13,out=p15p14g13);
+And(a=p15,b=g14,out=p15g14);
+Or5(a=false,b=p15p14p13g12,c=p15p14g13,d=p15g14,e=g15,out=G3);
+
+//Generating required carries using the higher level propagate and generate terms
+And(a=P0,b=nota,out=P0c0);
+Or(a=P0c0,b=G0,out=c4);
+
+And5(a=true,b=true,c=P1,d=P0,e=nota,out=P1P0c0);
+And(a=P1,b=G0,out=P1G0);
+Or5(a=false,b=false,c=P1P0c0,d=P1G0,e=G1,out=c8);
+
+And5(a=true,b=P2,c=P1,d=P0,e=nota,out=P2P1P0c0);
+And5(a=true,b=true,c=P2,d=P1,e=G0,out=P2P1G0);
+And(a=P2,b=G1,out=P2G1);
+Or5(a=false,b=P2P1P0c0,c=P2P1G0,d=P2G1,e=G2,out=c12);
+
+And5(a=nota,b=P3,c=P2,d=P1,e=P0,out=P3P2P1P0c0);
+And5(a=true,b=P3,c=P2,d=P1,e=G0,out=P3P2P1G0);
+And5(a=true,b=true,c=P3,d=P2,e=G1,out=P3P2G1);
+And(a=P3,b=G2,out=P3G2);
+Or5(a=P3P2P1P0c0,b=P3P2P1G0,c=P3P2G1,d=P3G2,e=G3,out=c16);
+
+//Sum bits
+CLAHigherOrder4bit(x=x[0..3],y=y[0..3],p0=p0,p1=p1,p2=p2,p3=p3,g0=g0,g1=g1,g2=g2,g3=g3,c0=nota,c=c3,sum=sum[0..3]);
+CLAHigherOrder4bit(x=x[4..7],y=y[4..7],p0=p4,p1=p5,p2=p6,p3=p7,g0=g4,g1=g5,g2=g6,g3=g7,c0=c4,c=c7,sum=sum[4..7]);
+CLAHigherOrder4bit(x=x[8..11],y=y[8..11],p0=p8,p1=p9,p2=p10,p3=p11,g0=g8,g1=g9,g2=g10,g3=g11,c0=c8,c=c11,sum=sum[8..11]);
+CLAHigherOrder4bit(x=x[12..15],y=y[12..15],p0=p12,p1=p13,p2=p14,p3=p15,g0=g12,g1=g13,g2=g14,g3=g15,c0=c12,c=c15,sum=sum[12..15]);
+
+//Overflow detection
+Xor(a=c15,b=c16,out=c15xorc16);
+And(a=signed,b=c15xorc16,out=of2);
+Not(in=signed,out=notsigned);
+And(a=notsigned,b=c16,out=of1);
+And(a=a,b=of1,out=of3);
+Or(a=of3,b=of2,out=of);
+}

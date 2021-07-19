@@ -1,0 +1,8 @@
+CHIP AdderSubtractor16bit {
+IN x[16],y[16],a,signed;
+OUT sum[16],of;
+PARTS:
+Not(in=a,out=nota);
+Xor16(a=nota,b=y[0..15],out=z);
+Sum16bit(x=x[0..15],y=z,a=a,signed=signed,sum=sum,of=of);
+}

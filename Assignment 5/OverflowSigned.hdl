@@ -1,0 +1,16 @@
+//Overflow detection logic for signed integer multiplication
+CHIP OverflowSigned {
+IN of1,of2[9],sign1,sign2;
+OUT of;
+PARTS:
+Xor(a=sign1,b=sign2,out=c);
+Not(in=c,out=notc); 
+Or5(a=of2[8],b=of2[0],c=of2[1],d=of2[2],e=of2[3],out=of3);
+Or5(a=of3,b=of2[4],c=of2[5],d=of2[6],e=of2[7],out=of4);
+And(a=notc,b=of4,out=of5);//Operands are of same sign
+And5(a=of2[0],b=of2[1],c=of2[2],d=of2[3],e=of2[4],out=of6);
+And5(a=of6,b=of2[5],c=of2[6],d=of2[7],e=of2[8],out=of7);
+Not(in=of7,out=of8);
+And(a=c,b=of8,out=of9);//Operands are of opposite sign
+Or(a=of5,b=of9,out=of);
+}

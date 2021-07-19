@@ -1,0 +1,15 @@
+//8bit unsigned integer multiplier with CSA based summand reduction
+CHIP MultiplierCSAUnsigned8bit {
+IN x[8],y[8];
+OUT out[8],of;
+PARTS:
+PartialProducts(x=x,y=y,pp0=pp0,pp1=pp1,pp2=pp2,pp3=pp3,pp4=pp4,pp5=pp5,pp6=pp6,pp7=pp7);
+CSA3to2Reducer(x=pp0,y=pp1,z=pp2,s=s0,c=c0);
+CSA3to2Reducer(x=pp3,y=pp4,z=pp5,s=s1,c=c1);
+CSA3to2Reducer(x=pp6,y=pp7,z=s0,s=s2,c=c2);
+CSA3to2Reducer(x=c0,y=s1,z=c1,s=s3,c=c3);
+CSA3to2Reducer(x=s2,y=c2,z=s3,s=s4,c=c4);
+CSA3to2Reducer(x=c3,y=s4,z=c4,s=s5,c=c5);
+AdderSubtractor16bit(x=c5,y=s5,a=true,signed=false,sum[0..7]=out,sum[8..15]=of2,of=of1);
+Overflow(of1=of1,of2=of2,of=of);
+}
